@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       get :quit
       get :open    #lixudong:open
       get :close   #lixudong:close 
+      get :detail
     end
 
     collection do

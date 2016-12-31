@@ -45,7 +45,7 @@ class CoursesController < ApplicationController
 
   def update
     @course = Course.find_by_id(params[:id])
-
+    
     if @course.update_attributes(course_params)
       flash={:info => "更新成功"}
     else
@@ -65,6 +65,18 @@ class CoursesController < ApplicationController
 
   #-------------------------for students----------------------
 
+
+  #-------------------------for both teachers and students----------------------
+
+  def index
+    @course=current_user.teaching_courses if teacher_logged_in?
+    @course=current_user.courses if student_logged_in?
+  end
+  
+  def public_list
+     @course=Course.all
+  end
+  
   def list
     @course=Course.all
     @course=@course-current_user.courses
@@ -93,17 +105,11 @@ class CoursesController < ApplicationController
     redirect_to courses_path, flash: flash
   end
 
-
-  #-------------------------for both teachers and students----------------------
-
-  def index
-    @course=current_user.teaching_courses if teacher_logged_in?
-    @course=current_user.courses if student_logged_in?
+  def detail
+    @course=Course.find_by_id(params[:id])
+    @course_intro = @course.course_introduction
   end
   
-  def public_list
-     @course=Course.all
-  end
    
    
   private
@@ -131,7 +137,8 @@ class CoursesController < ApplicationController
 
   def course_params
     params.require(:course).permit(:open_close, :course_code, :name, :course_type, :teaching_type, :exam_type,
-                                   :credit, :limit_num, :class_room, :course_time, :course_week, :open_close)
+                                   :credit, :limit_num, :class_room, :course_time, :course_week, :open_close, 
+                                   :course_introduction)
   end
 
 end
