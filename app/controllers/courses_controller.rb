@@ -106,7 +106,7 @@ class CoursesController < ApplicationController
   end
 
   def detail
-    @course=Course.find_by_id(params[:id])
+    @course=Course.find_by_id(params[:id])    #显示课程介绍的方法
     @course_intro = @course.course_introduction
   end
   
