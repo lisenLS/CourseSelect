@@ -1,9 +1,11 @@
 <div class="container-fluid">
   <div class="row">
 
+
     <div class="col-sm-2">
       <%= render "shared/sidenav" %>
     </div>
+
 
     <div class="col-sm-10">
 
@@ -26,6 +28,7 @@
               <th>课时/学分</th>
               <th>考试方式</th>
               <th>主讲教师</th>
+              <th>课程介绍</th>
 
 
             </tr>
@@ -39,10 +42,11 @@
                   <td><%= course.credit %></td>
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
+                  <td><%= link_to "课程介绍",detail_course_url(course),class: 'btn btn-xs btn-info'  %></td>
 
                   <% if teacher_logged_in? %>
                       <td><%= link_to "编辑", edit_course_url(course), class: 'btn btn-xs btn-info' %></td>
-                      
+
                       <% if course.open_close then %>
                         <td><%=link_to "关闭", close_course_url(course),class: 'btn btn-xs btn-danger' %><td>
                       <% end %>
@@ -59,6 +63,31 @@
             <% end %>
             </tbody>
           </table>
+          
+          
+          
+          
+          
+          
+                  <% if student_logged_in? %>
+
+                            <td><% sumcredit=0.0 %></td>
+                            <td><% sumtime=0 %></td>
+                   
+                        <% @course.each do |course| %>
+                            <tr>
+                                  <td><% sumcredit=sumcredit+(course.credit[3]).to_i+((course.credit[4]).to_i)/10 %></td>
+                                  <td><% sumtime=sumtime+(course.credit).to_i %></td>
+                            </tr>
+                        <% end %>
+                        
+                            <p>您总共选课的学分为:   <span class="label label-info"><%= sumcredit %></span>  </p>
+                            <p>您总共选课的课时为:   <span class="label label-info"><%= sumtime %></span>  </p>
+      
+
+
+                      
+                  <% end %>
 
         </div>
       </div>

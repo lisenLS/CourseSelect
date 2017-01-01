@@ -23,14 +23,13 @@ Rails.application.routes.draw do
       get :quit
       get :open    #lixudong:open
       get :close   #lixudong:close
-#      get :filter  #lixudong:filter
       get :refresh #lixudong:refresh
+       get :detail
     end
 
     collection do
       get :list   
-#      get :open    #lixudong:open
-#      get :close   #lixudong:close      
+      get :public_list
     end
   end
 
