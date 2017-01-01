@@ -87,11 +87,6 @@ class CoursesController < ApplicationController
     end
 
     @course=@course - current_user.courses
-    if @course.empty? == true
-        flash[:notice] = "没有查询到结果"
-      else
-        flash[:notice] = "为您查询到结果"
-    end
     @course_true=Array.new
     @course.each do |every_course|
       if every_course.open_close then

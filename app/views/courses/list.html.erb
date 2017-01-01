@@ -28,7 +28,10 @@
 <!--李旭东，添加搜索，结束-->
 
 
-
+<% if @course.empty? == true %>
+  <div class="alert alert-danger">没有找到结果</div>
+<% end %>
+<br />
 
 
 
