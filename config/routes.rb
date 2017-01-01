@@ -22,11 +22,13 @@ Rails.application.routes.draw do
       get :select
       get :quit
       get :open    #lixudong:open
-      get :close   #lixudong:close 
+      get :close   #lixudong:close
+#      get :filter  #lixudong:filter
+      get :refresh #lixudong:refresh
     end
 
     collection do
-      get :list
+      get :list   
 #      get :open    #lixudong:open
 #      get :close   #lixudong:close      
     end
@@ -38,7 +40,6 @@ Rails.application.routes.draw do
   get 'sessions/login' => 'sessions#new'
   post 'sessions/login' => 'sessions#create'
   delete 'sessions/logout' => 'sessions#destroy'
-
 
   # Example resource route with options:
   #   resources :products do

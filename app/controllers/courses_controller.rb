@@ -66,9 +66,20 @@ class CoursesController < ApplicationController
   #-------------------------for students----------------------
 
   def list
-    @course=Course.all
-    @course=@course-current_user.courses
-    
+
+    @q1=params[:name]
+    if @q1.nil? == false 
+      @course = Course.where("name like '#{@q1}' ")
+    else
+      @course=Course.all
+    end
+
+    @course=@course - current_user.courses
+    if @course.empty? == true
+        flash[:notice] = "没有查询到结果"
+      else
+        flash[:notice] = "为您查询到结果"
+    end
     @course_true=Array.new
     @course.each do |every_course|
       if every_course.open_close then
@@ -76,11 +87,10 @@ class CoursesController < ApplicationController
       end
     end 
     @course=@course_true
-    
   end
 
   def select
-    @course=Course.find_by_id(params[:id])
+    @course=Course.find_by_id(params[:name])
     current_user.courses<<@course
     flash={:success => "成功选择课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
@@ -92,7 +102,6 @@ class CoursesController < ApplicationController
     flash={:success => "成功退选课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
   end
-
 
   #-------------------------for both teachers and students----------------------
 
@@ -129,5 +138,6 @@ class CoursesController < ApplicationController
     params.require(:course).permit(:open_close, :course_code, :name, :course_type, :teaching_type, :exam_type,
                                    :credit, :limit_num, :class_room, :course_time, :course_week, :open_close)
   end
+  
 
 end

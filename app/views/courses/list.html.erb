@@ -13,6 +13,26 @@
           <table class="table table-striped table-hover">
             <thead>
 
+<!-- 李旭东，添加搜索，开始-->
+<%= form_tag '/courses/list' , :method => :get  do %>   
+  <div class="field">
+    <%= label_tag '课程名称'%>
+    <%= text_field_tag :name , params[:name] %>
+  </div>
+  <div class="actions">
+    <%= submit_tag "查询" %>
+  </div>
+  <% end %>
+<br />
+
+<!--李旭东，添加搜索，结束-->
+
+
+
+
+
+
+
             <tr>
               <th>课程编号</th>
               <th>课程名称</th>

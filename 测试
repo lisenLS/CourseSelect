@@ -4,3 +4,4 @@ test again
 
 sudo service postgresql start
 
+rails console
