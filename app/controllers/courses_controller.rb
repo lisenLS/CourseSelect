@@ -98,9 +98,18 @@ class CoursesController < ApplicationController
 
   def select
     @course=Course.find_by_id(params[:id])
-    current_user.courses<<@course
-    flash={:success => "成功选择课程: #{@course.name}"}
-    redirect_to courses_path, flash: flash
+    #添加是否选满判断    
+    #By  _listen    
+    if @course.limit_num.nil?|| @course.student_num<@course.limit_num
+       current_user.courses<<@course
+       @course.student_num+=1
+       @course.save
+       flash={:success => "成功选择课程: #{@course.name}"}
+       redirect_to courses_path, flash: flash
+     else
+       flash={danger: "当前课程已满，请选择其他课程: #{@course.name}"}
+       redirect_to courses_path, flash: flash         
+      end
   end
 
   def quit
