@@ -14,8 +14,9 @@
         </div>
 
         <div class="col-md-6 divcenter">
-          <h2>教务通知</h2>
+          <h2>通知</h2>
           
+          <a class="btn btn-info" href="http://www.w3schools.com/bootstrap/">More Info</a>
         </div>
 
         <div class="col-md-6 divcenter">

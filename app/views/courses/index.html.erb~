@@ -89,4 +89,3 @@
     </div>
   </div>
 </div>
-<% if student_logged_in? %><%= render 'courses/course_table' %><% end %>

@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20161231105421) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.boolean  "open_close",          default: false
+    t.boolean  "open",                default: false
     t.string   "course_introduction", default: "课程介绍"
   end
 
