@@ -18,6 +18,7 @@ class GradesController < ApplicationController
       @grades=@course.grades
       count_student_major(@grades)
       count_student_department(@grades)
+      count_student_grade(@grades)
     elsif student_logged_in?
       @grades=current_user.grades
       @grade_true=Array.new
@@ -81,6 +82,29 @@ def count_student_department(grades)
     @department_name=@hs_department.keys
     @department_count=@hs_department.values
     return @department_name,@department_count
+end
+
+    #统计学生成绩情况  listen
+def count_student_grade(grades)
+    @grades=grades
+    @our_grade=[0,0,0,0,0]
+    @grades.each do |grade|
+      unless grade.grade.nil?
+      case grade.grade
+      when 90..100
+        @our_grade[0]+=1
+      when 80 .. 90
+        @our_grade[1]+=1 
+      when 70 .. 80
+        @our_grade[2]+=1
+      when 60 .. 70
+        @our_grade[3]+=1
+      else 
+        @our_grade[4]+=1 
+      end
+      end
+    end
+    return @our_grade
 end
 
 end

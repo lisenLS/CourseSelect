@@ -29,7 +29,7 @@
               <% if teacher_logged_in? %>
 <div class="row clearfix">
 		<div class="col-md-12 column">
-			 <a id="modal-667053" href="#modal-container-667053" role="button" class="btn" data-toggle="modal">分析学生专业</a>
+			 <a id="modal-667053" href="#modal-container-667053" role="button" onclick="draw_major()" class="btn" data-toggle="modal">分析学生专业</a>
 			<div class="modal fade" id="modal-container-667053" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -39,7 +39,7 @@
             <div id="major_student" style="width: 600px;height:400px;"></div>
 					</div>
 				</div>
-			</div> <a id="modal-623517" href="#modal-container-623517" role="button" class="btn" data-toggle="modal">学生培养单位</a>
+			</div> <a id="modal-623517" href="#modal-container-623517" role="button" class="btn" onclick="draw_department()" data-toggle="modal">学生培养单位</a>
 			<div class="modal fade" id="modal-container-623517" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -49,7 +49,7 @@
 						 <div id="department_student" style="width: 600px;height:400px;"></div>
 					</div>
 				</div>
-			</div> <a id="modal-164386" href="#modal-container-164386" role="button" class="btn" data-toggle="modal">分析学生成绩</a>
+			</div> <a id="modal-164386" href="#modal-container-164386" role="button" class="btn" onclick="draw_grades()" data-toggle="modal">分析学生成绩</a>
 			<div class="modal fade" id="modal-container-164386" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 				<div class="modal-dialog">
 					<div class="modal-content">
@@ -95,7 +95,6 @@
 </div>
 
 <script type="text/javascript">
-       draw_major()
        //绘制专业分析图
        function draw_major(){
        // 基于准备好的dom，初始化echarts实例
@@ -153,6 +152,8 @@
         })
         }
         draw_department()
+        
+        
         //绘制培养单位分析图
          function draw_department(){
        // 基于准备好的dom，初始化echarts实例
@@ -206,6 +207,45 @@
             }
           ]
         })
+        }
+        
+        //绘制成绩分析
+        function draw_grades(){
+          // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('grade_student'));
+
+        // 指定图表的配置项和数据
+        var option = {
+          
+            title: {
+                text: '学生成绩分布'
+            },
+            tooltip: {},
+                  //工具箱
+              toolbox: {
+              show: true,
+              feature: {
+                  dataView: {readOnly: false},
+                  saveAsImage: {}
+              }
+          },
+            legend: {
+                data:['人数']
+            },
+            xAxis: {
+                data: ["100-90","90-80","80-70","70-60","60以下"]
+            },
+            yAxis: {},
+            series: [{
+                name: '人数',
+                type: 'bar',
+                data: <%=@our_grade%>
+            }],
+            
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
         }
     </script>
 
