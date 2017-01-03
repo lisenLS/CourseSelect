@@ -26,6 +26,7 @@
 
 <!--引入Echarts进行可视化分析部分按钮
               _By listen             -->
+              <% if teacher_logged_in? %>
 <div class="row clearfix">
 		<div class="col-md-12 column">
 			 <a id="modal-667053" href="#modal-container-667053" role="button" class="btn" data-toggle="modal">分析学生专业</a>
@@ -62,6 +63,7 @@
 			</div>
 		</div>
 	</div>
+	<% end %>
 <!--listen结束-->
 
 <tbody>
@@ -128,9 +130,11 @@
               type: 'pie',
               radius: '55%',
               data:[
+                <% if teacher_logged_in? %>
                   <% (0..@tip_name.length-1).each do |i| %>
                   {value:<%=@student_count[i]%>, name:"<%=@tip_name[i]%>"}, 
                   <%end%>
+                <%end%>
               ],
               itemStyle: {
               normal: {
@@ -181,8 +185,10 @@
               type: 'pie',
               radius: '55%',
               data:[
+                 <% if teacher_logged_in? %>
                   <% (0..@department_name.length-1).each do |i| %>
                   {value:<%=@department_count[i]%>, name:"<%=@department_name[i]%>"}, 
+                  <%end%>
                   <%end%>
               ],
               itemStyle: {

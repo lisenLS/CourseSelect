@@ -6,4 +6,5 @@ class Grade < ActiveRecord::Base
   def count_student_department
     @grades
   end
+  
 end
