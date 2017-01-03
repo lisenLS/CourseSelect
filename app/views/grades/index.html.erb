@@ -13,18 +13,60 @@
         <div class="panel-body" style="min-height: 450px">
           <table class="table table-striped table-hover">
             <thead>
-
             <tr>
               <th>学号</th>
               <th>名字</th>
               <th>专业</th>
               <th>培养单位</th>
               <th>课程</th>
+              <th>  </th>
               <th>目前分数</th>
-
             </tr>
             </thead>
-            <tbody>
+
+<!--引入Echarts进行可视化分析部分按钮
+              _By listen             -->
+              <% if teacher_logged_in? %>
+<div class="row clearfix">
+		<div class="col-md-12 column">
+			 <a id="modal-667053" href="#modal-container-667053" role="button" class="btn" data-toggle="modal">分析学生专业</a>
+			<div class="modal fade" id="modal-container-667053" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						</div>
+            <div id="major_student" style="width: 600px;height:400px;"></div>
+					</div>
+				</div>
+			</div> <a id="modal-623517" href="#modal-container-623517" role="button" class="btn" data-toggle="modal">学生培养单位</a>
+			<div class="modal fade" id="modal-container-623517" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						</div>
+						 <div id="department_student" style="width: 600px;height:400px;"></div>
+					</div>
+				</div>
+			</div> <a id="modal-164386" href="#modal-container-164386" role="button" class="btn" data-toggle="modal">分析学生成绩</a>
+			<div class="modal fade" id="modal-container-164386" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+						</div>
+           <div id="grade_student" style="width: 600px;height:400px;"></div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<% end %>
+<!--listen结束-->
+
+<tbody>
           
             <% @grades.each do |grade| %>
                 <tr>
@@ -52,4 +94,118 @@
   </div>
 </div>
 
+<script type="text/javascript">
+       draw_major()
+       //绘制专业分析图
+       function draw_major(){
+       // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('major_student'));
+        
+        // 绘制图表
+        myChart.setOption({
+          
+              title: {
+                  text: '学生专业成分构成图',
+                  left: 'center',
+                  top: 20,
+                  textStyle: {
+                      color: '#2c343c'
+                  }
+              },
+                  tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+
+        //工具箱
+        toolbox: {
+        show: true,
+        feature: {
+            dataView: {readOnly: false},
+            saveAsImage: {}
+        }
+    },
+        series : [
+            {
+              type: 'pie',
+              radius: '55%',
+              data:[
+                <% if teacher_logged_in? %>
+                  <% (0..@tip_name.length-1).each do |i| %>
+                  {value:<%=@student_count[i]%>, name:"<%=@tip_name[i]%>"}, 
+                  <%end%>
+                <%end%>
+              ],
+              itemStyle: {
+              normal: {
+              // 阴影的大小
+              shadowBlur: 200,
+              // 阴影水平方向上的偏移
+              shadowOffsetX: 0,
+              // 阴影垂直方向上的偏移
+              shadowOffsetY: 0,
+              // 阴影颜色
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+           },
+            }
+          ]
+        })
+        }
+        draw_department()
+        //绘制培养单位分析图
+         function draw_department(){
+       // 基于准备好的dom，初始化echarts实例
+        var myChart_department = echarts.init(document.getElementById('department_student'));
+        // 绘制图表
+        myChart_department.setOption({
+          
+              title: {
+                  text: '学生培养单位构成图',
+                  left: 'center',
+                  top: 20,
+                  textStyle: {
+                      color: '#2c343c'
+                  }
+              },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    },
+        //工具箱
+        toolbox: {
+        show: true,
+        feature: {
+            dataView: {readOnly: false},
+            saveAsImage: {}
+        }
+    },
+        series : [
+            {
+              type: 'pie',
+              radius: '55%',
+              data:[
+                 <% if teacher_logged_in? %>
+                  <% (0..@department_name.length-1).each do |i| %>
+                  {value:<%=@department_count[i]%>, name:"<%=@department_name[i]%>"}, 
+                  <%end%>
+                  <%end%>
+              ],
+              itemStyle: {
+              normal: {
+              // 阴影的大小
+              shadowBlur: 200,
+              // 阴影水平方向上的偏移
+              shadowOffsetX: 0,
+              // 阴影垂直方向上的偏移
+              shadowOffsetY: 0,
+              // 阴影颜色
+              shadowColor: 'rgba(0, 0, 0, 0.5)'
+            }
+           },
+            }
+          ]
+        })
+        }
+    </script>
 

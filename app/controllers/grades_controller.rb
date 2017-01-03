@@ -16,6 +16,8 @@ class GradesController < ApplicationController
     if teacher_logged_in?
       @course=Course.find_by_id(params[:course_id])
       @grades=@course.grades
+      count_student_major(@grades)
+      count_student_department(@grades)
     elsif student_logged_in?
       @grades=current_user.grades
       @grade_true=Array.new
@@ -28,6 +30,7 @@ class GradesController < ApplicationController
     else
       redirect_to root_path, flash: {:warning=>"请先登陆"}
     end
+    return  @grades
   end
 
 
@@ -39,5 +42,45 @@ class GradesController < ApplicationController
       redirect_to root_url, flash: {danger: '请登陆'}
     end
   end
+  
+  #统计学生专业情况  listen
+def count_student_major(grades)
+    @grades=grades
+    @major=[]
+    @grades.each do |grade|
+      @major.push(grade.user.major)
+    end
+    @hs = Hash.new
+    @major.each { |e|
+        if @hs.has_key?(e)
+            @hs[e] += 1
+        else
+            @hs[e] = 1
+        end
+        }
+    @tip_name=@hs.keys
+    @student_count=@hs.values
+    return @tip_name,@student_count
+end
+  
+    #统计学生单位情况  listen
+def count_student_department(grades)
+    @grades=grades
+    @department=[]
+    @grades.each do |grade|
+      @department.push(grade.user.department)
+    end
+    @hs_department = Hash.new
+    @department.each { |e|
+        if @hs_department.has_key?(e)
+            @hs_department[e] += 1
+        else
+            @hs_department[e] = 1
+        end
+        }
+    @department_name=@hs_department.keys
+    @department_count=@hs_department.values
+    return @department_name,@department_count
+end
 
 end
