@@ -95,7 +95,6 @@ class CoursesController < ApplicationController
     @course.each do |every_course|
       if every_course.open_close then
          @course_true.push every_course
-        @day,@class,@week=analy every_course.course_time,every_course.course_week
       end
     end 
     @course=@course_true
