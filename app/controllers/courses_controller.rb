@@ -70,7 +70,11 @@ class CoursesController < ApplicationController
 
   def index
     @course=current_user.teaching_courses if teacher_logged_in?
-    @course=current_user.courses if student_logged_in?
+    if student_logged_in?
+      @course=current_user.courses 
+      # haveselected_time(@course)
+    end
+    return @course
   end
   
   def public_list
@@ -85,36 +89,46 @@ class CoursesController < ApplicationController
     else
       @course=Course.all
     end
-
+    
     @course=@course - current_user.courses
     @course_true=Array.new
     @course.each do |every_course|
       if every_course.open_close then
          @course_true.push every_course
+        @day,@class,@week=analy every_course.course_time,every_course.course_week
       end
     end 
     @course=@course_true
+    
   end
 
   def select
+    haveselected_time(current_user.courses)
     @course=Course.find_by_id(params[:id])
-    #添加是否选满判断    
-    #By  _listen    
-    if @course.limit_num.nil?|| @course.student_num<@course.limit_num
-       current_user.courses<<@course
-       @course.student_num+=1
-       @course.save
-       flash={:success => "成功选择课程: #{@course.name}"}
-       redirect_to courses_path, flash: flash
-     else
-       flash={danger: "当前课程已满，请选择其他课程: #{@course.name}"}
-       redirect_to courses_path, flash: flash         
-      end
+    if !is_conflict(@course.course_time,@course.course_week)
+      #添加是否选满判断    
+      #By  _listen    
+      if @course.limit_num.nil?|| @course.student_num<@course.limit_num
+         current_user.courses<<@course
+         @course.student_num+=1
+         @course.save
+         flash={:success => "成功选择课程: #{@course.name}"}
+         redirect_to courses_path, flash: flash
+       else
+         flash={danger: "当前课程已满，请选择其他课程: #{@course.name}"}
+         redirect_to courses_path, flash: flash         
+        end
+    else
+      flash={danger: "课程冲突，请选择其他课程: #{@course.name}"}
+       redirect_to courses_path, flash: flash 
+    end
   end
 
   def quit
     @course=Course.find_by_id(params[:id])
     current_user.courses.delete(@course)
+    @course.student_num-=1
+    @course.save
     flash={:success => "成功退选课程: #{@course.name}"}
     redirect_to courses_path, flash: flash
   end
@@ -154,4 +168,45 @@ class CoursesController < ApplicationController
   end
   
 
+
+  def haveselected_time(course)
+    @course=course
+    @selected_name=[]
+    @selected_time=[]
+    @selected_week=[]
+    @course.each do |course|
+      @selected_name.push(course.name)
+      @selected_time.push(course.course_time)
+      @selected_week.push(course.course_week)
+    end
+    return @selected_name,@selected_time,@selected_week
+  end
+  
+  def is_conflict(course_time,course_week)
+    @day,@class,@week=analy course_time,course_week
+    (0 .. @selected_time.length-1).each do |i|
+    @s_day,@s_class,@s_week=analy @selected_time[i],@selected_week[i] 
+      if !( @week[1]<@s_week[0] ||  @week[0]>@s_week[1]) 
+        if @day.eql?(@s_day) 
+          if !(@class[1]<@s_class[0] || @class[0]>@s_class[1]) 
+            return true
+          end
+        end
+      end
+      end
+    return false
+  end
+    
+  def analy(course_time,course_week)
+    @d=course_time[1]
+    @c_s=course_time[3].to_i
+    @c_e=course_time[5..6].to_i
+    @c=[@c_s,@c_e]
+    @w_s=course_week[1].to_i
+    @w_e=course_week[3..4].to_i
+    @w=[@w_s,@w_e]
+    return @d,@c,@w
+  end
+  
+    
 end
