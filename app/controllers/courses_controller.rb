@@ -77,6 +77,12 @@ class CoursesController < ApplicationController
   def public_list
      @course=Course.all
   end
+
+  def show_course
+    @course=current_user.teaching_courses if teacher_logged_in?
+    @course=current_user.courses if student_logged_in?
+    @course_real_time = get_course_table(@course)
+  end
   
   def list
 
@@ -155,6 +161,12 @@ class CoursesController < ApplicationController
     end
   end
 
+  def admin_logged_in
+    unless admin_logged_in?
+      redirect_to root_url, flash: {danger: '请登陆'}
+    end
+  end
+
   # Confirms a  logged-in user.
   def logged_in
     unless logged_in?
@@ -168,7 +180,8 @@ class CoursesController < ApplicationController
                                    :course_introduction)
   end
   def get_course_table(courses)
-    course_time = Array.new(11) { Array.new(7, '') }
+    #name, course_type, class_room, course_week
+    course_time = Array.new(11) { Array.new(7, '') { Array.new(4)} }
     if courses
       courses.each do |cur|
         cur_time = String(cur.course_time)
@@ -176,7 +189,10 @@ class CoursesController < ApplicationController
         j = week_data_to_num(cur_time[0...end_j])
         t = cur_time[end_j + 1...cur_time.index(')')].split("-")
         for i in (t[0].to_i..t[1].to_i).each
-          course_time[(i-1)*7/7][j-1] = cur.name
+          course_time[(i-1)*7/7][j-1][0] = cur.name+"\n"+cur.class_room
+          course_time[(i-1)*7/7][j-1][1] = cur.course_type
+          course_time[(i-1)*7/7][j-1][2] = cur.class_room
+          course_time[(i-1)*7/7][j-1][3] = cur.course_week
         end
       end
     end

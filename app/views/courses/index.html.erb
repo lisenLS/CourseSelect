@@ -77,6 +77,8 @@
                         
                             <p>您总共选课的学分为:   <span class="label label-info"><%= sumcredit %></span>  </p>
                             <p>您总共选课的课时为:   <span class="label label-info"><%= sumtime %></span>  </p>
+							<p><%= link_to show_course_courses_path do %>  <span class="panel-title">查看课表</span> 
+          <% end %></p>
       
 
 
@@ -88,4 +90,3 @@
     </div>
   </div>
 </div>
-<% if student_logged_in? %><%= render 'courses/course_table' %><% end %>

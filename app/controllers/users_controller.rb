@@ -70,4 +70,10 @@ class UsersController < ApplicationController
     end
   end
 
+  def admin_logged_in
+    unless admin_logged_in?
+      redirect_to root_url, flash: {danger: '请登陆'}
+    end
+  end
+
 end
