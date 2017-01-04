@@ -2,31 +2,64 @@
 
   <div class="justforback" >
 
-    <div class="col-md-4">
+    <div class="col-md-12">
 
       <div class="tips indexdiv">
         <div class="row">
           <div class="col-lg-12">
             <div class="alert alert-info text-center">
-              公告
+              <span style="color: black; font-size:30px">
+                    公告
+                  </span>
             </div>
           </div>
         </div>
 
         <div class="col-md-6 divcenter">
-          <h2>教务通知</h2>
-          
+          <h2 style="color: black">教务通知</h2>
+			<div id="collapseNotice" class="panel-collapse collapse in">
+				<div class="panel-body">
+		  			<div class="table-responsive">
+		    		<% @notice.each do |notice| %>
+		        		<div>
+		          		<span class="glyphicon glyphicon-flag" style="color: black">
+		            	<%= link_to notice.title, notice_url(notice) %>
+		          		</span>
+		          		<span class="glyphicon glyphicon-calendar" style="float: right; color: black">
+		              	<%= notice.created_at.strftime('%Y-%m-%d %H:%M') %>
+		            	</span>
+		        		</div>
+		        		<br>
+		   	 	<% end %>
+		  		</div>
+			</div>
+  		</div>
+          <% if admin_logged_in? %>
+          <%= link_to new_notice_path do %>
+		    <span class="panel-title" style="float: right">发布通知</span> 
+          <% end %>
+		  <% end %>
         </div>
 
         <div class="col-md-6 divcenter">
-          <h2>热门课程</h2>
-            <ol>
-			<% @top_courses.each do |course| %>
-				<li><%= course %></li>
-                    <% end %>
-		</ol>
+          <h2 style="color: black">热门课程</h2>
+			<div id="collapseNotice" class="panel-collapse collapse in">
+				<div class="panel-body">
+              <div class="table-responsive">
+            <% @top_courses.each do |course| %>
+                <div>
+                <span class="glyphicon glyphicon-heart" style="color: black">
+                  <%= course %>
+                  </span>
+
+                </div>
+                <br>
+          <% end %>
+          </div>
+          </div>
+          </div>
           <%= link_to public_list_courses_path do %>
-              <span class="btn btn-info">浏览所有课程</span> 
+              <span class="panel-title" style="float: right" >浏览所有课程</span> 
           <% end %>
         </div>
       </div>

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :notices
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
     collection do
       get :list   
       get :public_list
+      get :show_course
     end
   end
 
