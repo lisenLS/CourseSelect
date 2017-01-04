@@ -36,6 +36,7 @@
             <tbody>
             <% @course.each do |course| %>
                 <tr>
+
                   <td><%= course.course_code %></td>
                   <td><%= course.name %></td>
                   <td><%= course.credit %></td>
@@ -88,4 +89,3 @@
     </div>
   </div>
 </div>
-<% if student_logged_in? %><%= render 'courses/course_table' %><% end %>
