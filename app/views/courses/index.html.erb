@@ -45,6 +45,7 @@
               <th>考试方式</th>
               <th>主讲教师</th>
               <th>课程介绍</th>
+              <th>操作</th>
 
 
             </tr>
@@ -57,7 +58,7 @@
                   <td><%= course.credit %></td>
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
-                  <td><%= link_to "课程介绍",detail_course_url(course),class: 'btn btn-xs btn-info'  %></td>
+                  <td><%= link_to "查看详情",detail_course_url(course),class: 'btn btn-xs btn-info'  %></td>
 
                   <% if teacher_logged_in? %>
                       <td><%= link_to "编辑", edit_course_url(course), class: 'btn btn-xs btn-info' %></td>

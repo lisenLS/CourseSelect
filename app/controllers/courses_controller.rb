@@ -88,7 +88,7 @@ class CoursesController < ApplicationController
 
     @q1=params[:name]
     if @q1.nil? == false 
-      @course = Course.where("name like '#{@q1}' ")
+      @course = Course.where("name like '%#{@q1}%' ")
     else
       @course=Course.all
     end
