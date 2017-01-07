@@ -1,4 +1,4 @@
-<div id="side_course_table" class="side_course_table col-sm-8">
+<div class="panel-body col-sm-8" style="margin-left: 16.8%">
   <div class="sideDiv_content">
     <div class="panel panel-primary filterable">
       <div class="table-responsive">
@@ -19,9 +19,11 @@
                 <td><%= i+1 %></td>
                 <% (0...@course_real_time[i].length).each do |j| %>
                     <!-- #name, course_type, class_room, course_week -->
-                    <% if@course_real_time[i][j][1]=="专业核心课" %>
-                      <td class='row<%= i+1 %> col<%= j+1 %>' style="color:red"><%= @course_real_time[i][j][0] %></td>
-                    <% else %>
+                    <% if @course_real_time[i][j][1]=="专业核心课" %>
+                      <td class='row<%= i+1 %> col<%= j+1 %>' bgcolor="e91e6f" style="color:black"><%= @course_real_time[i][j][0] %></td>
+                    <% elsif @course_real_time[i][j][1]=="一级学科普及课"%>
+                      <td class='row<%= i+1 %> col<%= j+1 %>' bgcolor="e21e3f"><%= @course_real_time[i][j][0] %></td>
+					<% else %>
                       <td class='row<%= i+1 %> col<%= j+1 %>'><%= @course_real_time[i][j][0] %></td>
                     <% end %>
                 <% end %>
@@ -66,7 +68,6 @@
             }
         }
     }
-    $(hidden_border());
 
     $(document).ready(
         function () {

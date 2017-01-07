@@ -8,11 +8,27 @@
 
 
     <div class="col-sm-10">
+      
+      
+      <% if student_logged_in? %>
+
+                            <td><% sumcredit=0.0 %></td>
+                            <td><% sumtime=0 %></td>
+                   
+                        <% @course.each do |course| %>
+                            <tr>
+                                  <td><% sumcredit=sumcredit+(course.credit[3]).to_i+((course.credit[4]).to_i)/10 %></td>
+                                  <td><% sumtime=sumtime+(course.credit).to_i %></td>
+                            </tr>
+                        <% end %>
+      <% end %>
+      
 
       <div class="panel panel-primary filterable">
         <div class="panel-heading">
           <% if teacher_logged_in? %><h3 class="panel-title">授课列表</h3><% end %>
-          <% if student_logged_in? %><h3 class="panel-title">已选课程</h3><% end %>
+          <% if student_logged_in? %><h3 class="panel-title">已选课程  您总共选课的课时/学分别为:<%= sumtime %>/<%= sumcredit %></h3><% end %>
+                                     
         </div>
 
 
@@ -29,6 +45,7 @@
               <th>考试方式</th>
               <th>主讲教师</th>
               <th>课程介绍</th>
+              <th>操作</th>
 
 
             </tr>
@@ -41,7 +58,7 @@
                   <td><%= course.credit %></td>
                   <td><%= course.exam_type %></td>
                   <td><%= course.teacher.name %></td>
-                  <td><%= link_to "课程介绍",detail_course_url(course),class: 'btn btn-xs btn-info'  %></td>
+                  <td><%= link_to "查看详情",detail_course_url(course),class: 'btn btn-xs btn-info'  %></td>
 
                   <% if teacher_logged_in? %>
                       <td><%= link_to "编辑", edit_course_url(course), class: 'btn btn-xs btn-info' %></td>
@@ -64,25 +81,7 @@
           </table>
     
                   <% if student_logged_in? %>
-
-                            <td><% sumcredit=0.0 %></td>
-                            <td><% sumtime=0 %></td>
-                   
-                        <% @course.each do |course| %>
-                            <tr>
-                                  <td><% sumcredit=sumcredit+(course.credit[3]).to_i+((course.credit[4]).to_i)/10 %></td>
-                                  <td><% sumtime=sumtime+(course.credit).to_i %></td>
-                            </tr>
-                        <% end %>
-                        
-                            <p>您总共选课的学分为:   <span class="label label-info"><%= sumcredit %></span>  </p>
-                            <p>您总共选课的课时为:   <span class="label label-info"><%= sumtime %></span>  </p>
-							<p><%= link_to show_course_courses_path do %>  <span class="panel-title">查看课表</span> 
-          <% end %></p>
-      
-
-
-                      
+                      <a data-toggle="modal" data-target="#login_modal"> 查看课表 <span ></span></a>
                   <% end %>
 
         </div>
@@ -90,4 +89,46 @@
     </div>
   </div>
 </div>
-<% if student_logged_in? %><%= render 'courses/course_table' %><% end %>
+
+
+<div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4><span class="glyphicon glyphicon-lock"></span> 登录</h4>
+          </div>
+          <div class="modal-body">
+            <%= form_for(:session, url: sessions_login_url, method: :post, html: {role: 'form', :id => 'login'}) do |f| %>
+                <div class="form-group">
+                  <%= f.label :email, "账号密码登陆" %>
+                  <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+                    <%= f.email_field :email, class: 'form-control', placeholder: "输入邮箱" %>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+                    <%= f.password_field :password, class: 'form-control', placeholder: "输入密码" %>
+                  </div>
+                </div>
+
+                <div class="checkbox">
+                  <label><%= f.check_box :remember_me %>记住我</label>
+                </div>
+                </div>
+            <% end %>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-success" onclick="document.getElementById('login').submit()">
+                登陆</button>
+<p style="float: left">没有账号?
+  <%= link_to "注册", new_user_path %>
+</p>
+</div>
+</div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>
