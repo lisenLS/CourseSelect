@@ -10,7 +10,8 @@ class HomesController < ApplicationController
 	end 
   	@top_courses = Array.new
 	  (1..len).each do |i|
-	  	@top_courses.push(@courses[i-1].course_code+" "+@courses[i-1].name+" "+@courses[i-1].teacher.name)
+	  	@top_courses.push(@courses[i-1].course_code+" "+@courses[i-1].name+
+	  		" "+@courses[i-1].teacher.name+" "+@courses[i-1].student_num.to_s+"/"+@courses[i-1].limit_num.to_s)
 	  end
   end
 
