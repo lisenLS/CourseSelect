@@ -42,7 +42,7 @@
         </div>
 
         <div class="col-md-6 divcenter">
-          <h2 style="color: black">选课情况</h2>
+          <h2 style="color: black">热门课程</h2>
 			<div id="collapseNotice" class="panel-collapse collapse in">
 				<div class="panel-body">
               <div class="table-responsive">
