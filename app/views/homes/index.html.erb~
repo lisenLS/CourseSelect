@@ -16,7 +16,14 @@
         </div>
 
         <div class="col-md-6 divcenter">
+		  <div style="display:inline-block">
           <h2 style="color: black">教务通知</h2>
+			<% if admin_logged_in? %>
+          <%= link_to new_notice_path do %>
+		    <span class="panel-title" style="float: right; margin-top=0px">发布通知</span> 
+          <% end %>
+		  <% end %>
+	      </div>
 			<div id="collapseNotice" class="panel-collapse collapse in">
 				<div class="panel-body">
 		  			<div class="table-responsive">
@@ -34,15 +41,11 @@
 		  		</div>
 			</div>
   		</div>
-          <% if admin_logged_in? %>
-          <%= link_to new_notice_path do %>
-		    <span class="panel-title" style="float: right">发布通知</span> 
-          <% end %>
-		  <% end %>
+          
         </div>
 
         <div class="col-md-6 divcenter">
-          <h2 style="color: black">热门课程</h2>
+          <h2 style="color: black">选课情况</h2>
 			<div id="collapseNotice" class="panel-collapse collapse in">
 				<div class="panel-body">
               <div class="table-responsive">
