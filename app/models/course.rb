@@ -8,5 +8,12 @@ class Course < ActiveRecord::Base
   validates :name, :course_type, :course_time, :course_week,
             :class_room, :credit, :teaching_type, :exam_type, presence: true, length: {maximum: 50}
 
-
+  def is_space?
+    if limit_num.nil?|| student_num<limit_num
+      return true
+    else
+      return false
+    end
+  end
+  
 end

@@ -110,7 +110,7 @@ class CoursesController < ApplicationController
     if !is_conflict(@course.course_time,@course.course_week)
       #添加是否选满判断    
       #By  _listen    
-      if @course.limit_num.nil?|| @course.student_num<@course.limit_num
+      if @course.is_space?
          current_user.courses<<@course
          @course.student_num+=1
          @course.save
@@ -121,7 +121,7 @@ class CoursesController < ApplicationController
          redirect_to courses_path, flash: flash         
         end
     else
-      flash={danger: "课程冲突，请选择其他课程: #{@course.name}"}
+      flash={danger: "\"#{@course.name}\"与已选课程\"#{@the_name}\"冲突，请选择其他课程"}
        redirect_to courses_path, flash: flash 
     end
   end
@@ -233,6 +233,7 @@ class CoursesController < ApplicationController
       if !( @week[1]<@s_week[0] ||  @week[0]>@s_week[1]) 
         if @day.eql?(@s_day) 
           if !(@class[1]<@s_class[0] || @class[0]>@s_class[1]) 
+            @the_name=@selected_name[i]
             return true
           end
         end
