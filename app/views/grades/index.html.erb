@@ -151,8 +151,6 @@
           ]
         })
         }
-        draw_department()
-        
         
         //绘制培养单位分析图
          function draw_department(){
@@ -211,12 +209,9 @@
         
         //绘制成绩分析
         function draw_grades(){
-          // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('grade_student'));
-
         // 指定图表的配置项和数据
         var option = {
-          
             title: {
                 text: '学生成绩分布'
             },
@@ -236,16 +231,21 @@
                 data: ["100-90","90-80","80-70","70-60","60以下"]
             },
             yAxis: {},
-            series: [{
+            series: [
+              {
+              itemStyle: {
+              normal: {
+                //颜色
+                    color: '#91c7ae',
+                }
+           },
                 name: '人数',
                 type: 'bar',
                 data: <%=@our_grade%>
             }],
-            
         };
-
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-        }
+  }
     </script>
 
