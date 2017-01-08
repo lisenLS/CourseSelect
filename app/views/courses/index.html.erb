@@ -81,13 +81,7 @@
           </table>
     
                   <% if student_logged_in? %>
-
-                           
-							<p><%= link_to show_course_courses_path do %>  <span class="panel-title">查看课表</span> 
-          <% end %></p>
-      
-
-
+                      <a data-toggle="modal" data-target="#login_modal"> 查看课表 <span ></span></a>
                   <% end %>
 
         </div>
@@ -95,3 +89,205 @@
     </div>
   </div>
 </div>
+
+<style type="text/css">
+ul,li{line-height: 24px; list-style:none; font-size: 14px;}
+.i1{width:8px; height:8px; line-height: 24px; vertical-align: top; margin: 8px 3px 10px 0; overflow: hidden; background:#CA8722; display:inline-block;}
+.i2{width:8px; height:8px; line-height: 24px; vertical-align: top; margin: 8px 3px 10px 0; overflow: hidden; background:#A32D2B; display:inline-block;}
+.i3{width:8px; height:8px; line-height: 24px; vertical-align: top; margin: 8px 3px 10px 0; overflow: hidden; background:#83B49D; display:inline-block;}
+.i4{width:8px; height:8px; line-height: 24px; vertical-align: top; margin: 8px 3px 10px 0; overflow: hidden; background:#5B949C; display:inline-block;}
+.i5{width:8px; height:8px; line-height: 24px; vertical-align: top; margin: 8px 3px 10px 0; overflow: hidden; background:#C3775D; display:inline-block;}
+</style>
+
+<div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" style="width:1200px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4><span class="glyphicon glyphicon-th"></span> 我的课表</h4>
+            <ul style="float: right">
+              <li style="float: left; margin-left: 8px"><i class="i1"></i>专业核心课</li>
+              <li style="float: left; margin-left: 8px"><i class="i2"></i>一级学科核心课</li>
+              <li style="float: left; margin-left: 8px"><i class="i3"></i>一级学科普及课</li>
+              <li style="float: left; margin-left: 8px"><i class="i4"></i>专业普及课</li>
+              <li style="float: left; margin-left: 8px"><i class="i5"></i>公共选修课</li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="panel-body col-sm-8" style="margin-left: 16.8%">
+  <div class="sideDiv_content">
+    <div class="panel panel-primary filterable">
+      <div class="table-responsive">
+        <table class="table table-bordered" style="text-align: center">
+          <thead>
+          <td></td>
+          <td>星期一</td>
+          <td>星期二</td>
+          <td>星期三</td>
+          <td>星期四</td>
+          <td>星期五</td>
+          <td>星期六</td>
+          <td>星期天</td>
+          </thead>
+          <tbody>
+          <% (-2...@course_real_time.length).each do |i| %>
+              <% t=3 %>
+              <% if i==2 %>
+                <tr>
+                  <td></td>
+                </tr>
+              <% elsif i==7 %>
+                <tr>
+                  <td></td>
+                </tr>
+              <% else %>
+                <% if i>2 %>
+                  <% t=2 %>
+                  <% end %>
+                  <% if i>7 %>
+                  <% t=1 %>
+                  <% end %>
+                  <tr>
+                <td><%= i+t %></td>
+                <% (0...@course_real_time[i+t-1].length).each do |j| %>
+                    <!-- #name, course_type, class_room, course_week -->
+                    <% if @course_real_time[i+t-1][j][1]=="专业核心课" %>
+                      <td class='row<%= i+t %> col<%= j+1 %>'  bgcolor="CA8722" style="color:black"><%= @course_real_time[i+t-1][j][0] %></td>
+                    <% elsif @course_real_time[i+t-1][j][1]=="一级学科核心课"%>
+                      <td class='row<%= i+t %> col<%= j+1 %>' bgcolor="A32D2B"><%= @course_real_time[i+t-1][j][0] %></td>
+                    <% elsif @course_real_time[i+t-1][j][1]=="一级学科普及课"%>
+                      <td class='row<%= i+t %> col<%= j+1 %>' bgcolor="83B49D"><%= @course_real_time[i+t-1][j][0] %></td>
+                    <% elsif @course_real_time[i+t-1][j][1]=="专业普及课"%>
+                      <td class='row<%= i+t %> col<%= j+1 %>' bgcolor="5B949C"><%= @course_real_time[i+t-1][j][0] %></td>
+                    <% elsif @course_real_time[i+t-1][j][1]=="公共选修课"%>
+                      <td class='row<%= i+t %> col<%= j+1 %>' bgcolor="C3775D"><%= @course_real_time[i+t-1][j][0] %></td>
+          <% else %>
+                      <td class='row<%= i+t %> col<%= j+1 %>'><%= @course_real_time[i+t-1][j][0] %></td>
+                    <% end %>
+                <% end %>
+              </tr>
+              <% end %>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+          </div>
+
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+</div>
+
+
+<script>
+    function hidden_border() {
+        var m = 11, n = 7;
+        // var cur = $('.row' + 3 + '.col' + 3);
+        // cur.text("heh");
+        // var cur1 = $('.row' + 3 + '.col' + 1);
+        // if(cur.attr('alt')=="heh")
+        //   cur.text("oo");
+        for (var j = 1; j <= n; j++) {
+            for (var i = m; i >= 0; i--) {
+                var cur = $('.row' + i + '.col' + j);
+                if(i-3 >= 0 && cur.text()){
+                  var p_row = $('.row' + (i - 1) + '.col' + j);
+                  var pp_row = $('.row' + (i - 2) + '.col' + j);
+                  // three same
+                  if(pp_row.text()!=''&&pp_row.text() == cur.text()&&p_row.text()!=''&&p_row.text() == cur.text()){
+                    pp_row.css("border-bottom", "none");
+                    p_row.css("border-top", "none");
+                    p_row.css("border-bottom", "none");
+                    cur.css("border-top", "none");
+                    pp_row.text("");
+                    cur.text("");
+                    i = i-2;
+                  }
+                  // two same
+                  else if(p_row.text()!=''&&p_row.text() == cur.text()){
+                    p_row.css("border-bottom", "none");
+                    cur.css("border-top", "none");
+                    p_row.text("");
+                    i = i-1;
+                  }
+                }
+                else if(i-2 >= 0 && cur.text()){
+                  var p_row = $('.row' + (i - 1) + '.col' + j);
+                  if (p_row.text() == cur.text()) {
+                        p_row.css("border-bottom", "none");
+                        cur.css("border-top", "none");
+                        p_row.text("");
+                        i = i-1;
+                      }
+                }
+                /*if (i - 1 >= 0 && cur.attr('alt') != '') {
+                    var pre_row = $('.row' + (i - 1) + '.col' + j);
+                    if (pre_row.attr('alt') == cur.attr('alt')) {
+                        pre_row.css("border-bottom", "none");
+                        cur.css("border-top", "none");
+                        cur.text("");
+                        i--;
+                        if (i - 1 <= m) {
+                            var p_pre_row = $('.row' + (i - 1) + '.col' + j);
+                            if (p_pre_row.attr('alt') == pre_row.attr('alt')) {
+                                i--;
+                                p_pre_row.css("border-bottom", "none");
+                                pre_row.css("border-top", "none");
+                                p_pre_row.text("");
+                            }
+                        }
+                    }
+
+                }*/
+            }
+        }
+    }
+    $(hidden_border());
+
+    $(document).ready(
+        function () {
+            var sideDiv_right = $("#side_course_table").width() - 40 + (document.body.clientHeight > $(window).height() ? 16 : 25);
+            var speed = 300;
+
+            $("#side_course_table").css("right", -sideDiv_right);
+            $("#side_course_table").css("top", window.pageYOffset + 100 + 'px');
+
+            var cnt = 0;
+
+            $("#course_table_slide_in_button").click(function () {
+                if (!cnt) {
+                    $("#side_course_table")
+                        .animate({
+                                right: '0px'
+                            },
+                            speed,
+                            function () {
+                                document.getElementById("course_table_slide_in_button").style.transform = "rotate(180deg)";
+                                cnt = 1;
+                            });
+                } else {
+                    $("#side_course_table")
+                        .animate({
+                                right: -sideDiv_right + 'px'
+                            },
+                            speed,
+                            function () {
+                                document.getElementById("course_table_slide_in_button").style.transform = "rotate(0deg)";
+                                cnt = 0;
+                            });
+                }
+            });
+
+        }).scroll(function () {
+        $("#side_course_table").css("top", window.pageYOffset + 100 + 'px');
+    });
+    $(function () {
+        $('.tooltip-show').tooltip('show');
+    });
+
+</script>
